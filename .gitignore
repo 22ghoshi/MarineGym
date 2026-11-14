@@ -196,3 +196,12 @@ pyrightconfig.json
 
 outputs/
 wandb/
+# local run artifacts
+*.bak
+*.png.bak
+*.npz
+scripts/thruster_B.npy
+scripts/outputs/
+scripts/wandb/
+outputs/
+wandb/

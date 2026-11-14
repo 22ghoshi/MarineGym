@@ -244,8 +244,10 @@ class ArticulationView(_ArticulationView):
             return None
 
     def get_world_poses(
-        self, env_indices: Optional[torch.Tensor] = None, clone: bool = True
+        self, env_indices: Optional[torch.Tensor] = None, clone: bool = True, usd=False
     ) -> Tuple[torch.Tensor, torch.Tensor]:
+        if usd or getattr(self, "_physics_view", None) is None:
+            return super().get_world_poses(env_indices, clone=clone, usd=True)
         indices = self._resolve_env_indices(env_indices)
         if self._physics_view is not None:
             with disable_warnings(self._physics_sim_view):
@@ -459,8 +461,10 @@ class RigidPrimView(_RigidPrimView):
         return self
 
     def get_world_poses(
-        self, env_indices: Optional[torch.Tensor] = None, clone: bool = True
+        self, env_indices: Optional[torch.Tensor] = None, clone: bool = True, usd=False
     ) -> Tuple[torch.Tensor, torch.Tensor]:
+        if usd or getattr(self, "_physics_view", None) is None:
+            return super().get_world_poses(env_indices, clone=clone, usd=True)
         indices = self._resolve_env_indices(env_indices)
         pos, rot = super().get_world_poses(indices, clone)
         return pos.unflatten(0, self.shape), rot.unflatten(0, self.shape)
